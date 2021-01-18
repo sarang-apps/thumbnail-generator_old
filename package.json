@@ -48,6 +48,7 @@
     "file-type": "^16.1.0",
     "fluent-ffmpeg": "^2.1.2",
     "install": "^0.13.0",
+    "music-metadata": "^7.6.4",
     "node-fetch": "^2.6.0",
     "npm": "^6.14.10",
     "sharp": "^0.27.0"

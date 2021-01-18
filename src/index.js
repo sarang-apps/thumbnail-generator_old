@@ -3,13 +3,16 @@ const exiftool = require("exiftool-vendored").exiftool;
 const sharp = require('sharp');
 const ffmpeg = require("fluent-ffmpeg");
 const path = require("path");
-const sprite = require('ffmpeg-generate-video-preview')
+const sprite = require('ffmpeg-generate-video-preview');
+const audioMetadata = require('music-metadata');
 
 // var filePath = "/Users/computerroom/Desktop/test_files/job_queue.json";
 // var filePath = "/Users/computerroom/Desktop/test_files/WhatsApp Audio 2020-09-06 at 4.58.53 PM.mp4";
-var filePath = "/Users/computerroom/Desktop/test_files/Mumay Smruty 3's.tif";
+// var filePath = "/Users/computerroom/Desktop/test_files/Mumay Smruty 3's.tif";
 // var filePath = "/Users/computerroom/Desktop/test_files/test.jpg";
 // var filePath = "/Users/computerroom/Desktop/test_files/World ending.mp4";
+var filePath = "/Users/computerroom/Desktop/test_files/test.mp3";
+
 var thumbsPath = "/Users/computerroom/Desktop/test_files/thumbnail.jpg";
 let thumbsFolder = "/Users/computerroom/Desktop/test_files/";
 var spriteFolder = "/Users/computerroom/Desktop/test_files/";
@@ -33,6 +36,7 @@ var spriteFolder = "/Users/computerroom/Desktop/test_files/";
                     var thumbsPath = getVideoSprite(filePath, spriteFolder, fileName);
                     break;
                 case "audio":
+                    getAudioArt(filePath);
                     break;
             
                 default:
@@ -126,7 +130,26 @@ function getVideoSprite(path, spriteFolder, fileName) {
     })
 }
 
+function getAudioArt(path) {
+    return new Promise((resolve, reject) => {
+        try {
+            audioMetadata.parseFile(path)
+            .then(metadata => {
+                // console.log(metadata);
+                let audioArt = audioMetadata.selectCover(metadata.common.picture);
 
+                console.log(audioArt);
+
+                let output = JSON.stringify({status:"success"});
+                resolve(output);
+
+            });
+          } catch (error) {
+            let output = JSON.stringify({status:"failed", error: e});
+            reject(output);
+          }
+    })
+}
 
 
 // Get File Type Function
